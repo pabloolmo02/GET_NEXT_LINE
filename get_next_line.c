@@ -6,7 +6,7 @@
 /*   By: polmo-lo <polmo-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 00:26:43 by polmo-lo          #+#    #+#             */
-/*   Updated: 2024/09/06 11:23:34 by polmo-lo         ###   ########.fr       */
+/*   Updated: 2024/09/13 17:36:59 by polmo-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,28 @@ char	*stract_line(char *stack)
 	line[i] = '\0';
 	return (line);
 }
-
+char	*update_stack(char *stack)
+{
+	char	*new_stack;
+	int		i;
+	int		j;
+	
+	while (stack[i] != '\n' && stack[i] != '\0')
+		i++;
+	if (stack[i] == '\0')
+	{
+		free(stack);
+		return(NULL);
+	}
+	i++;
+	new_stack = malloc(sizeof(char) * ft_strlen(stack) - i + 1);
+	if (!new_stack)
+		return(NULL);
+	while (stack[i])
+		new_stack[j++] = stack[i++];
+	new_stack[i] = '\0';
+	return (new_stack);
+}
 char *get_next_line(int fd)
 {
 	static	char	*stack; //Almacena cualquier dato sobrante después de que se haya encontrado una línea completa
@@ -64,5 +85,5 @@ char *get_next_line(int fd)
 			return (NULL);
 	}
 	line = stract_line(stack);
-	stack = update_stack(buffer)
+	stack = update_stack(buffer);
 }
