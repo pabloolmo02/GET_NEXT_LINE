@@ -6,7 +6,7 @@
 /*   By: polmo-lo <polmo-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 00:26:35 by polmo-lo          #+#    #+#             */
-/*   Updated: 2024/09/06 11:23:14 by polmo-lo         ###   ########.fr       */
+/*   Updated: 2024/09/18 18:16:16 by polmo-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
-	while (s[i])
+	while (s && s[i])
 	{
 		i++;
 	}
@@ -26,16 +26,24 @@ size_t	ft_strlen(const char *s)
 
 char	*ft_strchr(const char *s, int c)
 {
-	while (*s != (char)c)
+	int	i;
+
+	i = 0;
+	while (s[i])
 	{
-		if (*s == 0)
+		if (s[i] == (char)c)
 		{
-			return (NULL);
+			return ((char *)(s + i));
 		}
-		s++;
+		i++;
 	}
-	return ((char *)s);
+	if (c == '\0')
+	{
+		return ((char *)(s + i));
+	}
+	return (NULL);
 }
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*str;
@@ -63,4 +71,23 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	str[i] = 0;
 	return (str);
+}
+
+char	*ft_strdup(const char *s)
+{
+	char	*reserve;
+	size_t	len;
+	size_t	i;
+
+	i = 0;
+	len = ft_strlen(s) + 1;
+	reserve = (char *)malloc(len);
+	if (!reserve)
+		return (NULL);
+	while (i < len)
+	{
+		reserve[i] = s[i];
+		i++;
+	}
+	return (reserve);
 }
