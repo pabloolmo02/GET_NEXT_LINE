@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: polmo-lo <polmo-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/31 00:26:43 by polmo-lo          #+#    #+#             */
-/*   Updated: 2024/09/18 19:13:03 by polmo-lo         ###   ########.fr       */
+/*   Created: 2024/09/18 19:11:42 by polmo-lo          #+#    #+#             */
+/*   Updated: 2024/09/18 19:23:16 by polmo-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*stract_line(char *stack)
 {
@@ -98,54 +98,17 @@ char	*read_to_stack(int fd, char *stack)
 
 char	*get_next_line(int fd)
 {
-	static char	*stack;
+	static char	*stack[FD_MAX];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 
-	stack = read_to_stack(fd, stack);
-	if (!stack)
+	stack[fd] = read_to_stack(fd, stack[fd]);
+	if (!stack[fd])
 		return (NULL);
 
-	line = stract_line(stack);
-	stack = update_stack(stack);
+	line = stract_line(stack[fd]);
+	stack[fd] = update_stack(stack[fd]);
 	return (line);
 }
-
-/* char	*get_next_line(int fd)
-{
-	static char	*stack;
-	char		buffer[BUFFER_SIZE + 1];
-	ssize_t		bytes_read;
-	char		*line;
-	char		*temp;
-
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	while (!stack || !ft_strchr(stack, '\n'))
-	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read <= 0)
-		{
-			if (bytes_read == 0 && stack)
-				break ;
-			free(stack);
-			return (NULL);
-		}
-		buffer[bytes_read] = '\0';
-		if (!stack)
-			stack = ft_strdup(buffer);
-		else
-		{
-			temp = ft_strjoin(stack, buffer);
-			free(stack);
-			stack = temp;
-		}
-		if (!stack)
-			return (NULL);
-	}
-	line = stract_line(stack);
-	stack = update_stack(stack);
-	return (line);
-} */
